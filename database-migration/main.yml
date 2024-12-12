@@ -1,0 +1,32 @@
+# action.yml
+name: 'Database migration'
+description: 'Check if the database migration works'
+inputs:
+  dry-run:
+    description: Do a dry run
+    required: false
+    default: false
+  host:
+    description: MySQL host
+    required: false
+    default: 127.0.01
+  port:
+    description: MySQL port
+    required: false
+    default: 3306
+  user:
+    description: Username for MySQL
+    required: false
+    default: root
+  password:
+    description: MySQL password
+    required: true
+runs:
+  using: 'docker'
+  image: 'Containerfile'
+  env:
+    DRY_RUN: ${{ inputs.dry-run }}
+    MYSQL_HOST: ${{ inputs.host }}
+    MYSQL_PORT: ${{ inputs.port }}
+    MYSQL_USER: ${{ inputs.user }}
+    MYSQL_PASSWORD: ${{ inputs.password }}
