@@ -8,10 +8,10 @@ from os import environ
 def resolve_path(path: str):
     if Path(path).exists():
         return Path(path).resolve()
-    if Path(environ["TARGET_DIR"] + "/" + path).exists:
-        return Path(environ["TARGET_DIR"] + "/" + path).resolve()
-    if Path(environ["DECOMPOSER_TARGET_DIR"] + "/" + path).exists:
-        return Path(environ["DECOMPOSER_TARGET_DIR"] + "/" + path).resolve()
+    if "TARGET_DIR" in environ and Path(environ.get("TARGET_DIR") + "/" + path).exists:
+        return Path(environ.get("TARGET_DIR") + "/" + path).resolve()
+    if "DECOMPOSER_TARGET_DIR" in environ and Path(environ.get("DECOMPOSER_TARGET_DIR") + "/" + path).exists:
+        return Path(environ.get("DECOMPOSER_TARGET_DIR") + "/" + path).resolve()
 
     return False
 

@@ -1,6 +1,10 @@
 # action.yml
 name: 'Decomposer check'
 description: 'Check if dependencies are consistent between dependencies'
+inputs:
+  target-dir:
+    description: Dependency directory
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
