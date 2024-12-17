@@ -8,4 +8,4 @@ FROM gcr.io/distroless/python3-debian12
 COPY --from=builder /app /app
 WORKDIR /app
 ENV PYTHONPATH /app
-CMD ["/cmd/main.py"]
+CMD ["/app/main.py"]
