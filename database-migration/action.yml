@@ -23,7 +23,7 @@ inputs:
     required: true
 runs:
   using: 'docker'
-  image: 'Containerfile'
+  image: 'Dockerfile'
   env:
     DRY_RUN: ${{ inputs.dry-run }}
     MYSQL_HOST: ${{ inputs.host }}

@@ -3,4 +3,4 @@ name: 'Decomposer check'
 description: 'Check if dependencies are consistent between dependencies'
 runs:
   using: 'docker'
-  image: 'Containerfile'
+  image: 'Dockerfile'
