@@ -98,5 +98,3 @@ if not isdir(updates_path):
 import_updates()
 
 command(['diff', '--side-by-side', '--suppress-common-lines', '-W', '200', f'{update_db_name}.dump.sql', f'{schema_db_name}.dump.sql'])
-remove(f'{schema_db_name}.dump.sql')
-remove(f'{update_db_name}.dump.sql')
