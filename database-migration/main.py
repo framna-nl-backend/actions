@@ -16,9 +16,9 @@ mysql_password = environ.get('MYSQL_PASSWORD')
 default_args = [f"--user={mysql_user}", f"--password={mysql_password}", f"--host={mysql_host}", f"--port={mysql_port}"]
 dump_default_args = default_args + ["--skip-comments", "--compact", "--disable-keys", "--no-create-db"]
 
-db_name = str(uuid.uuid4()).split("-")[0]
-schema_db_name = f"{db_name}_schema"
-update_db_name = f"{db_name}_update"
+db_prefix = environ.get('DB_PREFIX', str(uuid.uuid4()).split("-")[0])
+schema_db_name = f"{db_prefix}_schema"
+update_db_name = f"{db_prefix}_update"
 
 current_schema_file = "docs/database/schema.sql"
 
@@ -60,8 +60,11 @@ def import_schema():
 
 def import_updates():
     command(['mysql', '-e', f'CREATE DATABASE IF NOT EXISTS {update_db_name};'] + default_args)
-    tag_list_str = command(['git', 'tag'])
+    working_dir = command(['pwd'])
+    print(f"::debug::Running in: {working_dir}")
+    tag_list_str = command(['git', 'tag', '--list'])
     print(f"::debug::Tag list: {tag_list_str}")
+    
     tag_list = tag_list_str.partition('\n')
     if not tag_list_str:
         print(f"::error::Empty tag list, please check the git clone!")
