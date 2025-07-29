@@ -60,7 +60,17 @@ def import_schema():
 
 def import_updates():
     command(['mysql', '-e', f'CREATE DATABASE IF NOT EXISTS {update_db_name};'] + default_args)
-    first_tag = command(['git', 'tag']).partition('\n')[0]
+    tag_list_str = command(['git', 'tag'])
+    print(f"::debug::Tag list: {tag_list_str}")
+    tag_list = tag_list_str.partition('\n')
+    if not tag_list_str:
+        print(f"::error::Empty tag list, please check the git clone!")
+        exit(1)
+    elif not tag_list:
+        print(f"::error::Tag list not formatted correctly!")
+        exit(1)
+
+    first_tag = tag_list[0]
     if not first_tag:
         print(f"::error::Could not find first tag, please check the git clone!")
         exit(1)
