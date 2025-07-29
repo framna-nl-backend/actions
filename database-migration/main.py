@@ -29,13 +29,13 @@ def command(cmd, file="", input=None):
     if dry_run:
         return ""
     if input:
-        result = subprocess.run(cmd, capture_output=True, text=True, input=input)
+        result = subprocess.run(cmd, capture_output=True, text=True, stderr=subprocess.STDOUT, input=input)
     else:
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = subprocess.run(cmd, capture_output=True, text=True, stderr=subprocess.STDOUT)
     try:
         result.check_returncode()
-    except Exception as e:
-        out = e.stderr if e.stderr else e.stdout
+    except CalledProcessError as e:
+        out = e.stdout
         print(f"::error{file_info}::Command failed: \n{out}")
         exit(1)
     return result.stdout
