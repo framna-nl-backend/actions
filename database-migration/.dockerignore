@@ -1,0 +1,2 @@
+# include git directory since the action runs git commands
+!.git
