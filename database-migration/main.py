@@ -63,13 +63,17 @@ def import_updates():
     first_tag = command(['git', 'tag']).partition('\n')[0]
     command(['mysql'] + default_args + [update_db_name], input=command(['git', 'show', f"{first_tag}:{current_schema_file}"]))
 
-    p = re.compile(r"update_([0-9\.]*)_[0-9\.]*\.sql")
+    p = re.compile(r"update_([0-9\.]*)(?:_to)?_[0-9\.]*\.sql")
     files = {}
     versions = []
     for entry in listdir(updates_path):
         if not isfile(join(updates_path, entry)):
             continue
-        version = p.search(entry).group(1)
+        result = p.search(entry)
+        if not result:
+            print(f"::warning file={entry}::Found non-standard file {entry}")
+            continue
+        version = result.group(1)
         versions.append(version)
         files[version] = entry
 
