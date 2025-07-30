@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.13
 
 from os import listdir,environ,remove
 from os.path import isfile, isdir, join
