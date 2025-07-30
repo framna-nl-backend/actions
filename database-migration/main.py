@@ -2,6 +2,7 @@
 
 from os import listdir, environ
 from os.path import isfile, isdir, join
+import shutil
 from packaging.version import Version
 import subprocess
 import re
@@ -12,6 +13,7 @@ mysql_host = environ.get('MYSQL_HOST')
 mysql_port = environ.get('MYSQL_PORT')
 mysql_user = environ.get('MYSQL_USER')
 mysql_password = environ.get('MYSQL_PASSWORD')
+cwd = environ.get('GITHUB_WORKSPACE', '.')
 
 default_args = [
     f"--user={mysql_user}",
@@ -34,6 +36,11 @@ current_schema_file = "docs/database/schema.sql"
 
 
 def command(cmd, file="", input=None):
+    cmd_path = shutil.which(cmd[0])
+    if not cmd_path:
+        print(f"::error::Command `{cmd[0]}` not found!")
+        exit(1)
+    cmd[0] = cmd_path
     line = " ".join(cmd)
     file_info = f" file={file}" if file else ""
     print(f"::debug{file_info}::Running `{line}`")
@@ -44,12 +51,14 @@ def command(cmd, file="", input=None):
                                 capture_output=True,
                                 text=True,
                                 stderr=subprocess.STDOUT,
-                                input=input)
+                                input=input,
+                                cwd=cwd)
     else:
         result = subprocess.run(cmd,
                                 capture_output=True,
                                 text=True,
-                                stderr=subprocess.STDOUT)
+                                stderr=subprocess.STDOUT,
+                                cwd=cwd)
     try:
         result.check_returncode()
     except subprocess.CalledProcessError as e:
