@@ -24,9 +24,7 @@ def get_review_data(commit_body):
         return None
 
 
-def get_reviewboard_client():
-    commit_body = subprocess.check_output(['git', 'show', '--pretty=format:%b', '-s'], cwd=cwd).decode().strip()
-    review_data = get_review_data(commit_body)
+def get_reviewboard_client(review_data=None):
     if not review_data:
         print('::error::No review data found')
         exit(1)
@@ -35,7 +33,10 @@ def get_reviewboard_client():
                     api_token=reviewboard_token.strip())
 
 
-root = get_reviewboard_client().get_root()
+commit_body = subprocess.check_output(['git', 'show', '--pretty=format:%b', '-s'], cwd=cwd).decode().strip()
+review_data = get_review_data(commit_body)
+
+root = get_reviewboard_client(review_data).get_root()
 if not root:
     print('::error::Client failed to connect!')
     exit(1)
