@@ -50,14 +50,12 @@ def command(cmd, file="", input=None):
         result = subprocess.run(cmd,
                                 capture_output=True,
                                 text=True,
-                                stderr=subprocess.STDOUT,
                                 input=input,
                                 cwd=cwd)
     else:
         result = subprocess.run(cmd,
                                 capture_output=True,
                                 text=True,
-                                stderr=subprocess.STDOUT,
                                 cwd=cwd)
     try:
         result.check_returncode()
@@ -73,7 +71,7 @@ def file_content(file):
     output = file_resource.read()
     file_resource.close()
 
-    print(f"::debug::File '{file}' output: {output}")
+    print(f"::debug::File '{file}' output: {output[:512].replace('\n', ' ')}")
     return output
 
 
@@ -83,7 +81,7 @@ def cmd_to_file(cmd, file):
         print(f"::error::Command returned empty output to file '{file}'!")
         exit(1)
 
-    print(f"::debug::Command output: {output[:512].replace('\\n', ' ')}")
+    print(f"::debug::Command output: {output[:512].replace('\n', ' ')}")
     file_resource = open(file, 'w')
     file_resource.write(output)
     file_resource.close()
@@ -101,13 +99,7 @@ def import_schema():
 def import_updates():
     command(['mysql', '-e', f'CREATE DATABASE IF NOT EXISTS {update_db_name};'] + default_args)
 
-    working_dir = environ.get('GITHUB_WORKSPACE')
-    pwd = environ.get('PWD')
-    print(f"::debug::Workspace: {working_dir}, Working Directory: {pwd}")
-
     tag_list_str = command(['git', '-C', cwd, 'tag', '--list'])
-    print(f"::debug::Tag list: {tag_list_str}")
-
     tag_list = tag_list_str.partition('\n')
     if not tag_list_str:
         print("::error::Empty tag list, please check the git clone!")
