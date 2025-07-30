@@ -6,8 +6,13 @@ WORKDIR /app
 RUN pip install --target=/app packaging
 
 FROM python:3-slim
-RUN 'apt-get install -y git'
+# Install git to run tasks
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git
+
 COPY --from=builder /app /app
+
 WORKDIR /app
 ENV PYTHONPATH=/app
 CMD ["/app/main.py"]
