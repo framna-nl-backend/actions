@@ -35,7 +35,7 @@ runs:
     #   run: |
     #     pip3 install packaging
 
-    - run: git tag --list
+    - run: /usr/bin/git -C /home/runner/work/skyfall/skyfall tag --list
       shell: bash
 
     - run: python3 $GITHUB_ACTION_PATH/main.py
