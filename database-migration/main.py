@@ -62,7 +62,7 @@ def command(cmd, file="", input=None):
     try:
         result.check_returncode()
     except subprocess.CalledProcessError as e:
-        out = e.stdout
+        out = e.stderr if e.stderr else e.stdout
         print(f"::error{file_info}::Command failed: \n{out}")
         exit(1)
     return result.stdout
@@ -79,8 +79,11 @@ def file_content(file):
 
 def cmd_to_file(cmd, file):
     output = command(cmd).replace(schema_db_name, 'DATABASE').replace(update_db_name, 'DATABASE')
+    if not output:
+        print(f"::error::Command returned empty output to file '{file}'!")
+        exit(1)
 
-    print(f"::debug::Command output: {output}")
+    print(f"::debug::Command output: {output[:512].replace('\\n', ' ')}")
     file_resource = open(file, 'w')
     file_resource.write(output)
     file_resource.close()
