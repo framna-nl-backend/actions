@@ -22,11 +22,13 @@ inputs:
     description: MySQL password
     required: true
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  env:
-    DRY_RUN: ${{ inputs.dry-run }}
-    MYSQL_HOST: ${{ inputs.host }}
-    MYSQL_PORT: ${{ inputs.port }}
-    MYSQL_USER: ${{ inputs.user }}
-    MYSQL_PASSWORD: ${{ inputs.password }}
+  using: 'composite'
+  steps:
+    - run: python3.13 $GITHUB_ACTION_PATH/main.py
+      env:
+        DRY_RUN: ${{ inputs.dry-run }}
+        MYSQL_HOST: ${{ inputs.host }}
+        MYSQL_PORT: ${{ inputs.port }}
+        MYSQL_USER: ${{ inputs.user }}
+        MYSQL_PASSWORD: ${{ inputs.password }}
+      shell: bash
