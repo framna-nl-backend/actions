@@ -85,8 +85,11 @@ def import_schema():
 
 def import_updates():
     command(['mysql', '-e', f'CREATE DATABASE IF NOT EXISTS {update_db_name};'] + default_args)
-    working_dir = command(['pwd'])
-    print(f"::debug::Running in: {working_dir}")
+
+    working_dir = environ.get('GITHUB_WORKSPACE')
+    pwd = environ.get('PWD')
+    print(f"::debug::Workspace: {working_dir}, Working Directory: {pwd}")
+
     tag_list_str = command(['git', 'tag', '--list'])
     print(f"::debug::Tag list: {tag_list_str}")
 

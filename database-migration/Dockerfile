@@ -13,6 +13,5 @@ RUN apt-get update && \
 
 COPY --from=builder /app /app
 
-WORKDIR /app
 ENV PYTHONPATH=/app
 CMD ["python", "/app/main.py"]
