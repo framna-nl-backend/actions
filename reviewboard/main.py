@@ -15,10 +15,10 @@ def get_review_data(commit_body):
     pattern = re.compile(r"https://([a-z\.\-]*).*?/r/([0-9]*)")
 
     if rb_match := rb_pattern.search(commit_body):
-        print(f'::info::RBCommons match found: team={rb_match.group(1)}, id={rb_match.group(2)}')
+        print(f'::debug::RBCommons match found: team={rb_match.group(1)}, id={rb_match.group(2)}')
         return {'domain': 'rbcommons.com', 'team': f'/s/{rb_match.group(1)}', 'review_id': rb_match.group(2)}
     elif match := pattern.search(commit_body):
-        print(f'::info::Match found: url={match.group(1)}, id={match.group(2)}')
+        print(f'::debug::Match found: url={match.group(1)}, id={match.group(2)}')
         return {'domain': match.group(1), 'team': '', 'review_id': match.group(2)}
     else:
         return None
