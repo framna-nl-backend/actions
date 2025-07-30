@@ -105,7 +105,7 @@ def import_updates():
     if not first_tag:
         print("::error::Could not find first tag, please check the git clone!")
         exit(1)
-    command(['mysql'] + default_args + [update_db_name], 
+    command(['mysql'] + default_args + [update_db_name],
             input=command(['git', 'show', f"{first_tag}:{current_schema_file}"]))
 
     p = re.compile(r"update_([0-9\.]*)(?:_to)?_[0-9\.]*\.sql")

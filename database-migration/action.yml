@@ -35,6 +35,9 @@ runs:
     #   run: |
     #     pip3 install packaging
 
+    - run: git tag --list
+      shell: bash
+
     - run: python3 $GITHUB_ACTION_PATH/main.py
       env:
         DRY_RUN: ${{ inputs.dry-run }}
