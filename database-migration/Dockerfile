@@ -15,4 +15,4 @@ COPY --from=builder /app /app
 
 WORKDIR /app
 ENV PYTHONPATH=/app
-CMD ["/app/main.py"]
+CMD ["python", "/app/main.py"]
