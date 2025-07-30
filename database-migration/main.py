@@ -59,19 +59,19 @@ def command(cmd, file="", input=None):
     return result.stdout
 
 
-def file_content(filename):
-    file = open(filename, 'r')
-    output = file.read()
-    file.close()
+def file_content(file):
+    file_resource = open(file, 'r')
+    output = file_resource.read()
+    file_resource.close()
     return output
 
 
-def cmd_to_file(cmd, filename):
+def cmd_to_file(cmd, file):
     output = command(cmd).replace(schema_db_name, 'DATABASE').replace(update_db_name, 'DATABASE')
 
-    file = open(filename, 'w')
-    file.write(output)
-    file.close()
+    file_resource = open(file, 'w')
+    file_resource.write(output)
+    file_resource.close()
 
 
 def import_schema():
