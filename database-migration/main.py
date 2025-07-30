@@ -72,12 +72,15 @@ def file_content(file):
     file_resource = open(file, 'r')
     output = file_resource.read()
     file_resource.close()
+
+    print(f"::debug::File '{file}' output: {output}")
     return output
 
 
 def cmd_to_file(cmd, file):
     output = command(cmd).replace(schema_db_name, 'DATABASE').replace(update_db_name, 'DATABASE')
 
+    print(f"::debug::Command output: {output}")
     file_resource = open(file, 'w')
     file_resource.write(output)
     file_resource.close()
