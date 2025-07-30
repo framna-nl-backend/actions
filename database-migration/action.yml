@@ -39,6 +39,7 @@ runs:
       shell: bash
 
     - run: python3 $GITHUB_ACTION_PATH/main.py
+      working-directory: ${{ github.workspace }}
       env:
         DRY_RUN: ${{ inputs.dry-run }}
         MYSQL_HOST: ${{ inputs.host }}
