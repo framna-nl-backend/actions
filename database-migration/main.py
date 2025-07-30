@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from os import listdir, environ
+from os import listdir, environ, path
 from os.path import isfile, isdir, join
 import shutil
 from packaging.version import Version
@@ -13,7 +13,7 @@ mysql_host = environ.get('MYSQL_HOST')
 mysql_port = environ.get('MYSQL_PORT')
 mysql_user = environ.get('MYSQL_USER')
 mysql_password = environ.get('MYSQL_PASSWORD')
-cwd = environ.get('GITHUB_WORKSPACE', '.')
+cwd = path.abspath(environ.get('GITHUB_WORKSPACE', '.'))
 
 default_args = [
     f"--user={mysql_user}",
@@ -99,7 +99,7 @@ def import_updates():
     pwd = environ.get('PWD')
     print(f"::debug::Workspace: {working_dir}, Working Directory: {pwd}")
 
-    tag_list_str = command(['git', 'tag', '--list'])
+    tag_list_str = command(['git', '-C', cwd, 'tag', '--list'])
     print(f"::debug::Tag list: {tag_list_str}")
 
     tag_list = tag_list_str.partition('\n')
@@ -114,8 +114,9 @@ def import_updates():
     if not first_tag:
         print("::error::Could not find first tag, please check the git clone!")
         exit(1)
+    old_schema_file = command(['git', '-C', cwd, 'show', f"{first_tag}:{current_schema_file}"])
     command(['mysql'] + default_args + [update_db_name],
-            input=command(['git', 'show', f"{first_tag}:{current_schema_file}"]))
+            input=old_schema_file)
 
     p = re.compile(r"update_([0-9\.]*)(?:_to)?_[0-9\.]*\.sql")
     files = {}
