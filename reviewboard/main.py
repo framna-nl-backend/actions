@@ -11,8 +11,8 @@ cwd = path.abspath(environ.get('GITHUB_WORKSPACE', '.'))
 
 
 def get_review_data(commit_body):
-    rb_pattern = re.compile(r"https://rbcommons.com/s/([a-z0-9\-]*).*?/r/([0-9]*)")
-    pattern = re.compile(r"https://([a-z\.\-]*).*?/r/([0-9]*)")
+    rb_pattern = re.compile(r"Review.*https://rbcommons.com/s/([a-z0-9\-]*).*?/r/([0-9]*)")
+    pattern = re.compile(r"Review.*https://([a-z\.\-]*).*?/r/([0-9]*)")
 
     if rb_match := rb_pattern.search(commit_body):
         print(f'::debug::RBCommons match found: team={rb_match.group(1)}, id={rb_match.group(2)}')
