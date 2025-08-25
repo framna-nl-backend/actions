@@ -1,0 +1,19 @@
+# action.yml
+name: 'Decomposer report'
+description: 'Report dependencies to GitHub'
+runs:
+  using: 'composite'
+  steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        python3 -m venv .venv
+        source .venv/bin/activate
+        pip3 install -r $GITHUB_ACTION_PATH/requirements.txt
+
+    - name: Report decomposer dependencies
+      shell: bash
+      working-directory: ${{ github.workspace }}
+      run: |
+        source .venv/bin/activate
+        python3 $GITHUB_ACTION_PATH/main.py
