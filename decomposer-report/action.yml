@@ -1,6 +1,10 @@
 # action.yml
 name: 'Decomposer report'
 description: 'Report dependencies to GitHub'
+inputs:
+  target-dir:
+    description: Dependency directory
+    required: true
 runs:
   using: 'composite'
   steps:
@@ -14,6 +18,8 @@ runs:
     - name: Report decomposer dependencies
       shell: bash
       working-directory: ${{ github.workspace }}
+      env:
+        TARGET_DIR: ${{ inputs.target-dir }}
       run: |
         source .venv/bin/activate
         python3 $GITHUB_ACTION_PATH/main.py
