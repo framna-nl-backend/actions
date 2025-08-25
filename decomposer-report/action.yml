@@ -5,6 +5,9 @@ inputs:
   target-dir:
     description: Dependency directory
     required: true
+  github-token:
+    description: Token to use in GH API calls
+    required: true
 runs:
   using: 'composite'
   steps:
@@ -20,7 +23,7 @@ runs:
       working-directory: ${{ github.workspace }}
       env:
         TARGET_DIR: ${{ inputs.target-dir }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
         source .venv/bin/activate
         python3 $GITHUB_ACTION_PATH/main.py
