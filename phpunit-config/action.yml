@@ -1,0 +1,11 @@
+# action.yml
+name: 'PHPUnit Config'
+description: 'Check if the PHPUnit config meets the Framna Amsterdam criteria'
+runs:
+  using: 'composite'
+  steps:
+    - name: Check PHPUnit config
+      shell: bash
+      working-directory: ${{ github.workspace }}
+      run: |
+        python3 $GITHUB_ACTION_PATH/main.py
