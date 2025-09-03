@@ -18,3 +18,7 @@ Will fail if you're mixing library versions and the stack depends on more than o
 
 Check if the commit has a review attached to it and if so,
 if the review has ship-its.
+
+## PHPUnit Config
+
+Check if the `tests/phpunit.xml` file matches the standards for a Framna Amsterdam PHPUnit config.
